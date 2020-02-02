@@ -208,7 +208,8 @@ for y in years:
     # WAVERG2 - Weighted Average (best 6 OAC / Senior Level all year finals)
     ## First 6 columns are in first half, last 2 are in "Middle" dataframe.
 
-    COIsFirstHalf = ["GEND", "SCHOOL", "ZIP3", "CONFUNI", "CONFPR", "CONFCHOIC"]
+    # Removed ZIP3 and CONFPR for now as they are not float values
+    COIsFirstHalf = ["GEND", "SCHOOL", "CONFUNI", "CONFCHOIC"]
     COIsSecondHalf = ["WAVERG2"]
 
     # Finding the student's average from the formula given by Dr. Franek.
@@ -229,6 +230,7 @@ for y in years:
     # Adding the rest of the columns of interest
     columnsOfInterest = pd.concat([columnsOfInterest] + [middle[x] for x in COIsSecondHalf] + 
                                   [averagesDf] + [preferencesDf] + [acceptedDf],axis=1)
+
     copy = columnsOfInterest.copy()
 
     mcmasterVector = copy["CONFUNI"] == 196
@@ -284,7 +286,7 @@ for y in years:
 
     # In[ ]:
 
-
+    allStudents.dropna(axis=0, how='any', thresh=None, subset=None, inplace=True) #dropping all rows that contain an empty value
     allStudents.to_csv('cleaned_data/allStudents/allStudents_'+str(year)+'.csv',index=False)
     acceptedMcMaster.to_csv('cleaned_data/acceptedOurUni/acceptedOurUni_'+str(year)+'.csv',index=False)
     notMcMaster.to_csv('cleaned_data/didntAccept/didntAccept_'+str(year)+'.csv',index=False)

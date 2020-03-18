@@ -209,7 +209,7 @@ for y in years:
     ## First 6 columns are in first half, last 2 are in "Middle" dataframe.
 
     # Removed ZIP3 and CONFPR for now as they are not float values
-    COIsFirstHalf = ["GEND", "SCHOOL", "CONFUNI", "CONFCHOIC"]
+    COIsFirstHalf = ["GEND", "SCHOOL", "ZIP3", "CONFUNI", "CONFCHOIC"]
     COIsSecondHalf = ["WAVERG2"]
 
     # Finding the student's average from the formula given by Dr. Franek.

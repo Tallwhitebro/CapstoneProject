@@ -146,7 +146,7 @@ for y in years:
                 studentAverages.append(average)        
             except ValueError:
     #             print("Student with incorrect number of courses applied.")
-                studentAverages.append(-1)
+                studentAverages.append(np.nan)
         return studentAverages
         
     # print(averageFinder(top6CourseMarks))
@@ -257,6 +257,12 @@ for y in years:
     # print("\nShape of acceptedMcMaster df (number of students that accepted):")
     # print(acceptedMcMaster.shape)
 
+    # Calculating the student with the lowest average who accepted our university.
+    # This is used to calculate the cutoff point.
+    smallest = acceptedMcMaster[(acceptedMcMaster["WAVERG2"] > 0) & (acceptedMcMaster["ACCEPTED"] == 1)].nsmallest(1,"WAVERG2").iloc[0]['WAVERG2']
+    # From this, generating the list of all students who received an offer.
+    receivedOffer = acceptedMcMaster[(acceptedMcMaster["WAVERG2"] > smallest)]
+
     # # Students that didn't accept a mcmaster offer:
     # print('\n\n\n\n')
     notMcMaster = copy[notmcmasterVector]
@@ -290,6 +296,7 @@ for y in years:
     allStudents.to_csv('cleaned_data/allStudents/allStudents_'+str(year)+'.csv',index=False)
     acceptedMcMaster.to_csv('cleaned_data/acceptedOurUni/acceptedOurUni_'+str(year)+'.csv',index=False)
     notMcMaster.to_csv('cleaned_data/didntAccept/didntAccept_'+str(year)+'.csv',index=False)
+    receivedOffer.to_csv('cleaned_data/receivedOffer/receivedOffer_'+str(year)+'.csv',index=False)
     print(year)
 
 

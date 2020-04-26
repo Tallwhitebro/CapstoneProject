@@ -82,8 +82,28 @@ for y in years:
 
     # print(allStudents["ZIP3"].head(50))
     allStudents['DIST'] = allStudents.apply(lambda row: d[row.ZIP3] if row.ZIP3 in d else np.nan, axis = 1)
+    allStudents['GEND'] = allStudents.apply(lambda row: 0 if row.GEND == 119 else 1, axis = 1)
 
-    allStudents.to_csv('cleaned_data/allStudents/allStudents_'+str(year)+'.csv',index=False)
+    minSchool = allStudents['SCHOOL'].min()
+    allStudents['SCHOOL'] = allStudents.apply(lambda row: row.SCHOOL - minSchool, axis=1)
+    allStudents['AVG'] = allStudents.apply(lambda row: row.AVG/100, axis=1)
+
+    # Normalizing data
+    minDist = allStudents['DIST'].min()
+    maxDist = allStudents['DIST'].max()
+    allStudents['DIST'] = allStudents.apply(lambda row: (row.DIST - minDist)/(maxDist-minDist), axis=1)
+
+    print(allStudents.shape)
+    allStudents.dropna(axis=0, how='any', thresh=None, subset=None, inplace=True) #dropping all rows that contain an empty value
+    print(allStudents.shape)
+    print()
+
+    rearrangedKeys = ['GEND','SCHOOL','ZIP3','CONFUNI','CONFCHOIC','WAVERG2','AVG','PREF','DIST','ACCEPTED']
+    allStudents = allStudents[rearrangedKeys]
+    print(allStudents.head())
+    test = allStudents.drop(columns = ["CONFUNI", "ZIP3", "CONFCHOIC", "WAVERG2"])
+    test.to_csv("cleaned_data/test/test_"+str(year)+".csv", index=False)
+    # allStudents.to_csv('cleaned_data/allStudents/allStudents_'+str(year)+'.csv',index=False)
 
 # print(allStudents.head(20))
 

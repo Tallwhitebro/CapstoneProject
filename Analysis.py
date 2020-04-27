@@ -56,10 +56,9 @@ for file in pklFiles:
 	print(df.shape)
 
 
-# # Change Year Loaded Here:
-
-# In[53]:
-
+with open('data/DistanceCalculated.csv', newline='') as f:
+    reader = csv.reader(f)
+    distances = list(reader)
 
 years = [10,11,12,13,14,15,16,17]
 for y in years:
@@ -140,10 +139,14 @@ for y in years:
 
                 # Some students don't seem to have 6 courses.
                 # Set their average to -1 in this case.
-                # print(remainder)
-                # print(necessaryCourses)
-                average = (max(remainder) + sum(necessaryCourses))/6
-                studentAverages.append(average)        
+                # if len(necessaryCourses) != 5:
+                #     studentAverages.append(np.nan)
+                #     print
+
+                length = len(necessaryCourses) + min(len(remainder),1)
+
+                average = (max(remainder) + sum(necessaryCourses))/length
+                studentAverages.append(average)
             except ValueError:
     #             print("Student with incorrect number of courses applied.")
                 studentAverages.append(np.nan)
@@ -231,6 +234,23 @@ for y in years:
     columnsOfInterest = pd.concat([columnsOfInterest] + [middle[x] for x in COIsSecondHalf] + 
                                   [averagesDf] + [preferencesDf] + [acceptedDf],axis=1)
 
+    zipCodes = []
+
+    zipData = columnsOfInterest[columnsOfInterest["ZIP3"].notna()]["ZIP3"]
+    zipSet = set(list(zipData.to_numpy()))
+    for zipCode in zipSet:
+        if zipCode not in zipCodes:
+            zipCodes.append(zipCode)
+
+    distanceDict = {}
+    for distance in distances:
+        try:
+            distanceDict[distance[0]] = float(distance[3])
+        except ValueError:
+            pass
+
+    columnsOfInterest['DIST'] = columnsOfInterest.apply(lambda row: distanceDict[row.ZIP3] if row.ZIP3 in distanceDict else np.nan, axis = 1)
+
     copy = columnsOfInterest.copy()
 
     mcmasterVector = copy["CONFUNI"] == 196
@@ -259,9 +279,9 @@ for y in years:
 
     # Calculating the student with the lowest average who accepted our university.
     # This is used to calculate the cutoff point.
-    smallest = acceptedMcMaster[(acceptedMcMaster["WAVERG2"] > 0) & (acceptedMcMaster["ACCEPTED"] == 1)].nsmallest(1,"WAVERG2").iloc[0]['WAVERG2']
+    smallest = acceptedMcMaster[(acceptedMcMaster["AVG"] > 0) & (acceptedMcMaster["ACCEPTED"] == 1)].nsmallest(1,"AVG").iloc[0]['AVG']
     # From this, generating the list of all students who received an offer.
-    receivedOffer = acceptedMcMaster[(acceptedMcMaster["WAVERG2"] > smallest)]
+    receivedOffer = acceptedMcMaster[(acceptedMcMaster["AVG"] >= smallest)]
 
     # # Students that didn't accept a mcmaster offer:
     # print('\n\n\n\n')

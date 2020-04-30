@@ -3,23 +3,21 @@ from sklearn.model_selection import train_test_split # for splitting dataset
 import util
 
 def prepare_data(data_from_path):
-    path = data_from_path
     years = [11,12,13,14,15,16,17]
-    target = 'ACCEPTED'
+    target = 'ACCEPTED' # the column holding the ground truth value for a student 
 
-    df = pd.read_csv(path + '10.csv')
+    df = pd.read_csv(data_from_path + '10.csv')
 
     # add more data to dataset
     for y in years:
-        df = df.append(pd.read_csv(path + str(y)+'.csv'))
+        df = df.append(pd.read_csv(data_from_path + str(y)+'.csv'))
         
-    #dropping all rows that contain an empty value
+    # dropping all rows that contain an empty value
     df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=True)
 
-    #dir(df_train)
-    df_tgt=df.ACCEPTED
+    df_tgt=df.ACCEPTED # target dataframe
 
-    df = df.drop([target], axis='columns') # drop target column from dataset
+    df = df.drop([target], axis='columns') g# drop target column from dataset
     if "ZIP3" in df.keys():
         df = df.drop(['ZIP3'], axis='columns')
 

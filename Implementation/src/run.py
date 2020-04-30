@@ -7,8 +7,6 @@ import util
 
 if __name__ == "__main__":
     config = util.read_yaml()
-    received_offer_data_path = "../cleaned_data/receivedOffer/receivedOffer_"
-    data.prepare_data(received_offer_data_path)
 
     model_NN = neural_network.retrieve_model()
     model_SVM = support_vector_machine.retrieve_model()
@@ -18,7 +16,7 @@ if __name__ == "__main__":
 
     # Neural Network
     print("---------------------------------------------------------")
-    print("Generating Neural Network reuslts:\n")
+    print("Generating Neural Network results:\n")
     cutoff_NN = predict.calculate_cutoff(all_students_data_path, target_cap, model_NN)
     test_accuracy.accuracy_NN()
     print("\n")

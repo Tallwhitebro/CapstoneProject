@@ -1,0 +1,2 @@
+all_students_data_path: "../cleaned_data/allStudents/allStudents_17.csv"
+target_cap: 300

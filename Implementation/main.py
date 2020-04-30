@@ -30,7 +30,7 @@ def allocateStudents(sortedStudents, maxCapacity, model): #array of arrays, int
 			break
 		nStudents += 1
 	
-	return studentAvg
+	return cutoffAvg
 
 # Load from pickle file
 def load_pkl(path):
@@ -46,6 +46,9 @@ def main():
 	df = df.sort_values(by=['AVG'], ascending = False)
 	if "ACCEPTED" in df.keys():
 		df = df.drop(['ACCEPTED'], axis='columns') # drop target column from dataset
+
+	if "ZIP3" in df.keys():
+		df = df.drop(['ZIP3'], axis='columns')
 
 	print("Loading model")
 	# Target number of university acceptances

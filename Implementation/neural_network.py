@@ -2,6 +2,11 @@ import numpy as np
 import os
 from keras.models import Sequential
 from keras.layers import Dense
+import pickle
+
+# Save object into compressed pickle file
+def save_as_pkl(object, path):
+	pickle.dump(object, open(path, "wb"))
 
 # load the dataset
 data_dir = '../cleaned_data/allStudents/'
@@ -48,3 +53,5 @@ print('Accuracy of model on dataset: %.2f' % (accuracy_model * 100))
 # evaluate the keras model
 _, accuracy_algorithm = model.evaluate(test_X, test_y)
 print('Accuracy of algorithm on test data: %.2f' % (accuracy_algorithm * 100))
+
+save_as_pkl(model, "../models/NN.pkl")

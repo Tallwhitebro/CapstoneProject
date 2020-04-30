@@ -22,33 +22,28 @@ def load_pkl(path):
 # loading on future runs
 files = [f for f in os.listdir("data/") if f.split('1')[0] == 'file']
 for file in files:
-    print ('\n'+file)
+    print ('\n'+"Loading " + file)
     fName = file.split('.')[0]
     df = pd.read_csv('data/' + file, delimiter=',', na_values=['NA'])
 #     df["Id"] = df.reset_index().index
 #     df.set_index("Id")
-    print(df.shape)
     save_as_pkl(df, 'pickles/'+fName+'.pkl')
 
 ## Loading preprocessed dataframes
 pklFiles = [f for f in os.listdir("pickles/") if f.split('1')[0] == 'file']
 for file in pklFiles:
 	df = load_pkl("pickles/" + file)
-	print(df.shape)
-
 
 with open('data/DistanceCalculated.csv', newline='') as f:
     reader = csv.reader(f)
     distances = list(reader)
 
+# Analyzing each year's data one at a time.
 years = [10,11,12,13,14,15,16,17]
 for y in years:
     year = y
     fname = "file"+str(year)+".pkl"
     df = load_pkl("pickles/"+fname)
-
-
-    ### Starting to analyze the data
 
     # First 30 columns:
     firstPart = df.iloc[:,0:30]
@@ -191,6 +186,7 @@ for y in years:
     columnsOfInterest['DIST'] = columnsOfInterest.apply(lambda row: distanceDict[row.ZIP3]
             if row.ZIP3 in distanceDict else np.nan, axis = 1)
 
+    del columnsOfInterest['ZIP3']
     copy = columnsOfInterest.copy()
 
     targetUni = copy["CONFUNI"] == 196
@@ -216,5 +212,5 @@ for y in years:
     acceptedTargetUni.to_csv('cleaned_data/acceptedOurUni/acceptedOurUni_'+str(year)+'.csv',index=False)
     didntAccept.to_csv('cleaned_data/didntAccept/didntAccept_'+str(year)+'.csv',index=False)
     receivedOffer.to_csv('cleaned_data/receivedOffer/receivedOffer_'+str(year)+'.csv',index=False)
-    print(year)
+    print("Finished processing year " + str(year))
 

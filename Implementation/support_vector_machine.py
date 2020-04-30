@@ -3,6 +3,11 @@ import time # for timing training of data
 import pandas as pd
 from sklearn.svm import SVC # actual support vector classifier
 from sklearn.model_selection import train_test_split # for splitting dataset
+import pickle
+
+# Save object into compressed pickle file
+def save_as_pkl(object, path):
+	pickle.dump(object, open(path, "wb"))
 
 # load cleaned up csvs into dataframe
 path = '../cleaned_data/receivedOffer/receivedOffer_'
@@ -55,3 +60,5 @@ unique, counts = np.unique(resultArray, return_counts=True)
 print(dict(zip(unique, counts)))
 
 print(model) # show all of SVM's params
+
+save_as_pkl(model, "../models/SVM.pkl")

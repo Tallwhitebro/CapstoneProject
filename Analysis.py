@@ -186,7 +186,6 @@ for y in years:
     columnsOfInterest['DIST'] = columnsOfInterest.apply(lambda row: distanceDict[row.ZIP3]
             if row.ZIP3 in distanceDict else np.nan, axis = 1)
 
-    del columnsOfInterest['ZIP3']
     copy = columnsOfInterest.copy()
 
     targetUni = copy["CONFUNI"] == 196

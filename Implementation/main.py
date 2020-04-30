@@ -29,9 +29,6 @@ def allocateStudents(sortedStudents, maxCapacity, model): #array of arrays, int
 			cutoffAvg = studentAvg
 			break
 		nStudents += 1
-
-	print(nStudents)
-	print(studentAvg)
 	
 	return studentAvg
 
@@ -41,6 +38,7 @@ def load_pkl(path):
 	return obj
 
 def main():
+	print("\nReading student data")
 	# The location of the input data
 	dataPath = "../cleaned_data/allStudents/allStudents_17.csv"
 	df = pd.read_csv(dataPath)
@@ -49,6 +47,7 @@ def main():
 	if "ACCEPTED" in df.keys():
 		df = df.drop(['ACCEPTED'], axis='columns') # drop target column from dataset
 
+	print("Loading model")
 	# Target number of university acceptances
 	targetSeatCap = 300
 	# Model choice location
@@ -56,7 +55,11 @@ def main():
 	# loading the model
 	model = load_pkl(modelPath)
 
-	allocateStudents(df, targetSeatCap, model)
+	print("Calculating cutoff\n")
+	cutoffAvg = allocateStudents(df, targetSeatCap, model)
+
+	print("To reach the seat goal of " + str(targetSeatCap) + " seats,")
+	print("the cutoff average must be set to " + str(round(cutoffAvg,1))+"%\n")
 
 if __name__ == "__main__":
 	main()

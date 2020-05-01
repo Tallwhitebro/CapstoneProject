@@ -17,7 +17,7 @@ def prepare_data(data_from_path):
 
     df_tgt=df.ACCEPTED # target dataframe
 
-    df = df.drop([target], axis='columns') g# drop target column from dataset
+    df = df.drop([target], axis='columns') # drop target column from dataset
     if "ZIP3" in df.keys():
         df = df.drop(['ZIP3'], axis='columns')
 

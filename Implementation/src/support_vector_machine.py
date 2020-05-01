@@ -14,16 +14,11 @@ def create_model():
     X_train, _, y_train, _ = data.retrieve_data()
 
     # define and run SVM model
-    model = SVC(kernel = 'linear', verbose=True, C=10)
-    start = time.time()
-    print("Started training...")
+    model = SVC(kernel = 'linear', verbose=False, C=10)
     model.fit(X_train, y_train) #trains model
-    print("... done training.")
-    end = time.time()
-
-    print(model) # show all of SVM's params
 
     util.save_as_pkl(model, "../models/SVM.pkl")
+    return model
 
 if __name__ == "__main__":
     create_model()

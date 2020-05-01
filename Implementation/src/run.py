@@ -9,7 +9,7 @@ if __name__ == "__main__":
     config = util.read_yaml()
 
     model_NN = neural_network.retrieve_model()
-    model_SVM = support_vector_machine.retrieve_model()
+    model_SVM = support_vector_machine.create_model()
 
     all_students_data_path = config["all_students_data_path"]
     target_cap = config["target_cap"]

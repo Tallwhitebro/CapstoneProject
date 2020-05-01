@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split # for splitting dataset
+from sklearn import preprocessing
 import util
 
 def prepare_data(data_from_path):
@@ -23,11 +24,16 @@ def prepare_data(data_from_path):
 
     # scramble the data and split the data 80-20 for training and testing
     X_train, X_test, y_train, y_test = train_test_split(df, df_tgt, test_size=0.2)
+    
+    # normalize data
+    mm_scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
+    X_train = mm_scaler.fit_transform(X_train)
+    X_test = mm_scaler.transform(X_test)
 
-    util.save_as_pkl([X_train, X_test, y_train, y_test], "../cleaned_data/data.pkl")
+    util.save_as_pkl([X_train, X_test, y_train, y_test], "../cleaned_data/data-new.pkl")
 
 def retrieve_data():
-    X_train, X_test, y_train, y_test = util.load_pkl("../cleaned_data/data.pkl")
+    X_train, X_test, y_train, y_test = util.load_pkl("../cleaned_data/data-new.pkl")
     return X_train, X_test, y_train, y_test
 
 if __name__ == "__main__":

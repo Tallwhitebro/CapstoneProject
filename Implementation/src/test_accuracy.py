@@ -15,6 +15,8 @@ def accuracy_NN():
     _, accuracy_algorithm = model.evaluate(X_test, y_test, verbose=False)
     print('Accuracy of algorithm on test data: %.2f' % (accuracy_algorithm * 100))
 
+    return accuracy_algorithm * 100
+
 def accuracy_SVM():
     X_train, X_test, y_train, y_test = data.retrieve_data()
     model = support_vector_machine.retrieve_model()
@@ -26,6 +28,8 @@ def accuracy_SVM():
     # evaluate the algorithm
     accuracy_algorithm = model.score(X_test, y_test)
     print('Accuracy of algorithm on test data: %.2f' % (accuracy_algorithm * 100))
+
+    return accuracy_algorithm * 100
     
 
 if __name__ == "__main__":
